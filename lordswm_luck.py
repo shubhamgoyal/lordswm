@@ -1,5 +1,7 @@
-TOTAL_TURNS = 14
-LUCK = 2
+from decimal import *
+
+TOTAL_TURNS = Decimal(16)
+LUCK = Decimal(2)
 
 class unique_element:
     def __init__(self,value,occurrences):
@@ -25,36 +27,36 @@ def perm_unique_helper(listunique,result_list,d):
                 i.occurrences+=1
 
 def get_prob(luck, turn_number, turns_befallen):
-	F = min(0.5, luck/10.0)
-	prob = F**(1 + turns_befallen - (turn_number - turns_befallen - 1)*F/(1 - F))
+	F = min(Decimal(0.5), luck/Decimal(10.0))
+	prob = F**(Decimal(1) + turns_befallen - (turn_number - turns_befallen - Decimal(1))*F/(Decimal(1) - F))
 	# if prob > 1:
 	# 	print "Probability greater than 1: prob = ", prob, " luck = ", luck, " turn_number = ", turn_number, " turns_befallen = ", turns_befallen
 	return prob
 
 def get_prob_sequence(sequence, num_luck_falls):
-	final_prob = 1.0
+	final_prob = Decimal(1.0)
 	num_previous_luck_falls = 0
 	for i in range(1, TOTAL_TURNS + 1):
 		element = sequence[i - 1]
 		prob = get_prob(LUCK, i, num_previous_luck_falls)
-		if prob > 1.0:
-			return 0.0
+		if prob > Decimal(1.0):
+			return Decimal(0.0)
 		elif element == 'l':
 			final_prob *= prob
 			num_previous_luck_falls += 1
 		elif element == 'u':
-			final_prob *= (1.0 - prob)
+			final_prob *= (Decimal(1.0) - prob)
 		else:
 			print "Something is not right"
 	# print sequence
 	# print final_prob
-	if final_prob == 1.0:
+	if final_prob == Decimal(1.0):
 		print "Control didn't enter the for loop in get_prob_sequence"
 	# print final_prob
 	return final_prob
 
 def get_prob_luck_falls_x_times(x):
-	total_prob = 0.0
+	total_prob = Decimal(0.0)
 	sequence_falls = []
 	for i in range(0, x):
 		sequence_falls.append('l')
@@ -65,12 +67,12 @@ def get_prob_luck_falls_x_times(x):
 		total_prob += get_prob_sequence(permuted_sequence, x)
 	return total_prob
 
-# sum = 0.0
+# sum = Decimal(0.0)
 # for i in range(0, TOTAL_TURNS + 1):
 # 	sum = sum + get_prob_luck_falls_x_times(i)
 # 	print i, " = ", get_prob_luck_falls_x_times(i)
 # print "sum = ", sum
-lucky_times = 0.0
+lucky_times = Decimal(0.0)
 for i in range(1, TOTAL_TURNS + 1):
 	lucky_times += i * get_prob_luck_falls_x_times(i)
 
