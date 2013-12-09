@@ -1,6 +1,3 @@
-import itertools
-import math
-
 TOTAL_TURNS = 14
 LUCK = 2
 
